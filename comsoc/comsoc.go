@@ -38,6 +38,12 @@ func maxCount(count Count) (bestAlts []Alternative) {
 
 	sort.SliceStable(keys, func(i, j int) bool { return count[keys[i]] > count[keys[j]] })
 
+	max_c := count[keys[0]]
+	for i := range keys {
+		if count[keys[i]] != max_c {
+			return keys[:i]
+		}
+	}
 	return keys
 }
 
@@ -62,5 +68,5 @@ func checkProfileAlternative(prefs Profile, alts []Alternative) error {
 			}
 		}
 	}
-	return errors.New("All good")
+	return nil
 }
