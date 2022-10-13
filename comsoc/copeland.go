@@ -22,8 +22,10 @@ func CopelandSWF(p Profile) (Count, error) {
 				}
 				if count_a > count_b {
 					c[a]++
+					c[b]--
 				} else if count_b > count_a {
 					c[b]++
+					c[a]--
 				}
 			}
 		}

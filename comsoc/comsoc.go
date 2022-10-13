@@ -2,7 +2,6 @@ package comsoc
 
 import (
 	"errors"
-	"sort"
 )
 
 type Alternative int
@@ -31,20 +30,17 @@ func isPref(alt1, alt2 Alternative, prefs []Alternative) bool {
 }
 
 func maxCount(count Count) (bestAlts []Alternative) {
-	keys := make([]Alternative, 0, len(count))
-	for a := range count {
-		keys = append(keys, a)
-	}
-
-	sort.SliceStable(keys, func(i, j int) bool { return count[keys[i]] > count[keys[j]] })
-
-	max_c := count[keys[0]]
-	for i := range keys {
-		if count[keys[i]] != max_c {
-			return keys[:i]
+	max := -1
+	for k := range count {
+		if count[k] > max {
+			max = count[k]
+			bestAlts = make([]Alternative, 1)
+			bestAlts[0] = k
+		} else if count[k] == max {
+			bestAlts = append(bestAlts, k)
 		}
 	}
-	return keys
+	return bestAlts
 }
 
 func checkProfileAlternative(prefs Profile, alts []Alternative) error {
@@ -69,4 +65,13 @@ func checkProfileAlternative(prefs Profile, alts []Alternative) error {
 		}
 	}
 	return nil
+}
+
+func contains(alts []Alternative, alt Alternative) bool {
+	for _, a := range alts {
+		if a == alt {
+			return true
+		}
+	}
+	return false
 }
